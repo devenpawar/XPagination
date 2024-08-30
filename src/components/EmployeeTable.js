@@ -15,6 +15,7 @@ const EmployeeTable = () => {
       console.log(response.data);
       setEmployees(response.data);
     } catch (error) {
+      alert("Fetch Data Failed");
       console.log(error);
     }
   };
