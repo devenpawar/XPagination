@@ -1,0 +1,40 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+}
+
+.page-item {
+  margin: 0 5px;
+}
+
+.page-link {
+  padding: 8px 12px;
+  border: 1px solid black;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+
+.page-item.active .page-link {
+  background-color: black;
+  color: white;
+}
