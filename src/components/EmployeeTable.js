@@ -5,7 +5,7 @@ import "./EmployeeTable.css";
 const EmployeeTable = () => {
   const [employees, setEmployees] = useState([]); // Full employee data
   const [currentPage, setCurrentPage] = useState(1); // Current page number
-  const [employeesPerPage] = useState(5); // Employees to display per page
+  const [employeesPerPage] = useState(10); // Employees to display per page
 
   const fetchEmployee = async () => {
     try {
@@ -103,7 +103,9 @@ const Pagination = ({
             Previous
           </button>
         </li>
-        <li className="page-number" style={{marginLeft: "1rem", marginRight: "1rem"}}>{currentPage}</li>
+        <li className="page-number" stye>
+          {currentPage}
+        </li>
         <li>
           <button
             onClick={handleNextPage}
