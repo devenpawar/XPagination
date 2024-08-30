@@ -104,8 +104,8 @@ const Pagination = ({
             Previous
           </button>
         </li>
-        <li className="page-number" stye>
-          <span>{currentPage}</span>
+        <li className="page-number">
+          <h1>{currentPage}</h1>
         </li>
         <li>
           <button
