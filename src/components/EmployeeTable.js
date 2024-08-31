@@ -5,7 +5,7 @@ import "./EmployeeTable.css";
 const EmployeeTable = () => {
   const [employees, setEmployees] = useState([]); // Full employee data
   const [currentPage, setCurrentPage] = useState(1); // Current page number
-  const [employeesPerPage] = useState(10); // Employees to display per page
+  const employeesPerPage = 10; // Employees to display per page
 
   const fetchEmployee = async () => {
     try {
@@ -15,7 +15,7 @@ const EmployeeTable = () => {
       console.log(response.data);
       setEmployees(response.data);
     } catch (error) {
-      alert("failed to fetch data");
+      alert("Failed to fetch data");
       console.log(error);
     }
   };
@@ -24,17 +24,14 @@ const EmployeeTable = () => {
     fetchEmployee();
   }, []);
 
-  // Get current employees
-  const indexOfLastEmployee = currentPage * employeesPerPage;
-  const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
-  const currentEmployees = employees.slice(
-    indexOfFirstEmployee,
-    indexOfLastEmployee
-  );
+  // Calculate the employees to display on the current page
+  const getPaginatedEmployees = () => {
+    const start = (currentPage - 1) * employeesPerPage;
+    const end = start + employeesPerPage;
+    return employees.slice(start, end);
+  };
 
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
+  // Handlers for Previous and Next buttons
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -42,10 +39,13 @@ const EmployeeTable = () => {
   };
 
   const handleNextPage = () => {
-    if (currentPage < Math.ceil(employees.length / employeesPerPage)) {
+    const totalPages = Math.ceil(employees.length / employeesPerPage);
+    if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
   };
+
+  const currentEmployees = getPaginatedEmployees();
 
   return (
     <div className="table-container" style={{ margin: "1rem" }}>
@@ -70,54 +70,24 @@ const EmployeeTable = () => {
           ))}
         </tbody>
       </table>
-      <Pagination
-        employeesPerPage={employeesPerPage}
-        totalEmployees={employees.length}
-        paginate={paginate}
-        currentPage={currentPage}
-        handlePreviousPage={handlePreviousPage}
-        handleNextPage={handleNextPage}
-      />
+      <div className="pagination-controls">
+        <button
+          onClick={handlePreviousPage}
+          disabled={currentPage === 1}
+          className="page-link"
+        >
+          Previous
+        </button>
+        <span className="page-number">{currentPage}</span>
+        <button
+          onClick={handleNextPage}
+          disabled={currentEmployees.length < employeesPerPage}
+          className="page-link"
+        >
+          Next
+        </button>
+      </div>
     </div>
-  );
-};
-
-const Pagination = ({
-  employeesPerPage,
-  totalEmployees,
-  paginate,
-  currentPage,
-  handlePreviousPage,
-  handleNextPage,
-}) => {
-  const totalPages = Math.ceil(totalEmployees / employeesPerPage);
-
-  return (
-    <nav>
-      <ul className="pagination">
-        <li>
-          <button
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-            className="page-link"
-          >
-            Previous
-          </button>
-        </li>
-        <li className="page-number">
-          <h1>{currentPage}</h1>
-        </li>
-        <li>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className="page-link"
-          >
-            Next
-          </button>
-        </li>
-      </ul>
-    </nav>
   );
 };
 
